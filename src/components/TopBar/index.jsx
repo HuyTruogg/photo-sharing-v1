@@ -2,23 +2,30 @@ import React from "react";
 import { AppBar, Toolbar, Typography } from "@mui/material";
 
 import "./styles.css";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useMatch } from "react-router-dom";
 import models from "../../modelData/models";
 
 function TopBar() {
   const location = useLocation();
-  const { userId } = useParams();
+
+  const matchUserDetail = useMatch("/users/:userId");
+  const matchUserPhotos = useMatch("/photos/:userId");
+  const matchUserList = useMatch("/users");
+
   let rightText = "Photo Sharing App";
 
-  if (
-    location.pathname.startsWith("/users/") &&
-    !location.pathname.includes("/photos/")
-  ) {
-    const user = models.userModel(userId);
-    if (user) rightText = `${user.first_name} ${user.last_name}`;
-  } else if (location.pathname.startsWith("/photos/")) {
-    const user = models.userModel(userId);
-    if (user) rightText = `Ảnh của ${user.first_name}`;
+  if (matchUserDetail && matchUserDetail.params.userId) {
+    const user = models.userModel(matchUserDetail.params.userId);
+    if (user) {
+      rightText = `${user.first_name} ${user.last_name}`;
+    }
+  } else if (matchUserPhotos && matchUserPhotos.params.userId) {
+    const user = models.userModel(matchUserPhotos.params.userId);
+    if (user) {
+      rightText = `Ảnh của ${user.first_name}`;
+    }
+  } else if (matchUserList) {
+    rightText = "Users";
   }
 
   return (
@@ -36,25 +43,3 @@ function TopBar() {
 }
 
 export default TopBar;
-
-// import React from "react";
-// import { AppBar, Toolbar, Typography } from "@mui/material";
-
-// import "./styles.css";
-
-// /**
-//  * Define TopBar, a React component of Project 4.
-//  */
-// function TopBar () {
-//     return (
-//       <AppBar className="topbar-appBar" position="absolute">
-//         <Toolbar>
-//           <Typography variant="h5" color="inherit">
-//             This is the TopBar component
-//           </Typography>
-//         </Toolbar>
-//       </AppBar>
-//     );
-// }
-
-// export default TopBar;
