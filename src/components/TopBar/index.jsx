@@ -2,7 +2,7 @@ import React from "react";
 import { AppBar, Toolbar, Typography } from "@mui/material";
 
 import "./styles.css";
-import { useLocation, useMatch } from "react-router-dom";
+import { useMatch } from "react-router-dom";
 import models from "../../modelData/models";
 
 function TopBar() {
