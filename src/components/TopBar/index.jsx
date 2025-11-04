@@ -6,8 +6,6 @@ import { useLocation, useMatch } from "react-router-dom";
 import models from "../../modelData/models";
 
 function TopBar() {
-  const location = useLocation();
-
   const matchUserDetail = useMatch("/users/:userId");
   const matchUserPhotos = useMatch("/photos/:userId");
   const matchUserList = useMatch("/users");
@@ -32,7 +30,7 @@ function TopBar() {
     <AppBar position="absolute">
       <Toolbar>
         <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
-          Nguyễn Trường Huy
+          Nguyễn Trường Huy B22DCAT147
         </Typography>
         <Typography variant="h6" color="inherit">
           {rightText}
