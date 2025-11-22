@@ -8,12 +8,19 @@ import {
 } from "@mui/material";
 
 import "./styles.css";
-import models from "../../modelData/models";
+// import models from "../../modelData/models";
+import fetchModel from "../../lib/fetchModelData";
 import { Link } from "react-router-dom";
 
 function UserList() {
-  const users = models.userListModel();
+  // const users = models.userListModel();
+  const [users, setUsers] = React.useState([]);
 
+  React.useEffect(() => {
+    fetchModel("https://3wknrp-8081.csb.app/api/user/user/list").then((res) => {
+      if (res.data) setUsers(res.data);
+    });
+  }, []);
   return (
     <div>
       <Typography variant="h6">Danh sách người dùng</Typography>
@@ -25,9 +32,7 @@ function UserList() {
                 to={`/users/${user._id}`}
                 style={{ textDecoration: "none" }}
               >
-                <ListItemText
-                  primary={`${user.first_name} ${user.last_name}`}
-                />
+                <ListItemText primary={user.last_name} />
               </Link>
             </ListItem>
             <Divider />

@@ -3,16 +3,33 @@ import { Typography } from "@mui/material";
 
 import "./styles.css";
 import { useParams, Link } from "react-router-dom";
-import models from "../../modelData/models";
+// import models from "../../modelData/models";
+import fetchModel from "../../lib/fetchModelData";
 
 function UserPhotos() {
   const { userId } = useParams();
-  const photos = models.photoOfUserModel(userId);
-  const user = models.userModel(userId);
+  // const photos = models.photoOfUserModel(userId);
+  // const user = models.userModel(userId);
+  const [user, setUser] = React.useState(null);
+  const [photos, setPhotos] = React.useState([]);
+  React.useEffect(() => {
+    fetchModel(`https://3wknrp-8081.csb.app/api/user/user/${userId}`).then(
+      (res) => {
+        if (res.data) setUser(res.data);
+      }
+    );
+
+    fetchModel(
+      `https://3wknrp-8081.csb.app/api/photo/photosOfUser/${userId}`
+    ).then((res) => {
+      if (res.data) setPhotos(res.data);
+    });
+  }, [userId]);
+  if (!user) return <div>Đang tải...</div>;
 
   return (
     <div>
-      <Typography variant="h5">Ảnh của {user.first_name}</Typography>
+      <Typography variant="h5">Ảnh của {user.last_name}</Typography>
       {photos.map((photo) => (
         <div key={photo._id} style={{ marginBottom: "20px" }}>
           <img
